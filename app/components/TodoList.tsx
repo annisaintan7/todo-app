@@ -1,19 +1,37 @@
-import React from 'react';
+'use client';
+
 import TodoItem from './TodoItem';
-import { Todo } from '../types/todo';
+import type { Todo } from '../types/todo';
 
-export default function TodoList({ todos }: { todos: Todo[] }) {
+type TodoListProps = {
+  todos: Todo[];
+  onToggleTodo: (id: number) => void;
+  onDeleteTodo: (id: number) => void;
+};
+
+export default function TodoList({
+  todos,
+  onToggleTodo,
+  onDeleteTodo,
+}: TodoListProps) {
+  if (todos.length === 0) {
+    return (
+      <p className="text-center text-gray-500">
+        Belum ada tugas.
+      </p>
+    );
+  }
+
   return (
-    <section>
-      <h2 className="text-xl font-semibold text-gray-800 mb-4">
-        Tugas Anda
-      </h2>
-
-      <ul className="space-y-3">
-        {todos.map((todo) => (
-          <TodoItem key={todo.id} todo={todo} />
-        ))}
-      </ul>
-    </section>
+    <div>
+      {todos.map((todo) => (
+        <TodoItem
+          key={todo.id}
+          todo={todo}
+          onToggle={onToggleTodo}
+          onDelete={onDeleteTodo}
+        />
+      ))}
+    </div>
   );
 }
